@@ -39,6 +39,16 @@ if(ossn_is_hook('newsfeed', "center:top")) {
 			<div class="col-md-4">
             			<?php if(!empty($isempty)){ ?>
 				<div class="newsfeed-right">
+					<script type="text/javascript">
+						atOptions = {
+							'key' : '8352d82c064b874cad242c7e8779fbd4',
+							'format' : 'iframe',
+							'height' : 250,
+							'width' : 392,
+							'params' : {}
+						};
+						document.write('<scr' + 'ipt type="text/javascript" src="http' + (location.protocol === 'https:' ? 's' : '') + '://www.displaynetworkcontent.com/8352d82c064b874cad242c7e8779fbd4/invoke.js"></scr' + 'ipt>');
+					</script>
 					<?php
 						echo $sidebar;
 						?>                            
