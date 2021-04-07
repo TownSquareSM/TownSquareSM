@@ -297,6 +297,7 @@ CREATE TABLE IF NOT EXISTS `ossn_users` (
   `last_activity` int NOT NULL,
   `activation` varchar(32),
   `time_created` int NOT NULL,
+  `is_removed` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1 COLLATE=utf8mb4_general_ci;
 
