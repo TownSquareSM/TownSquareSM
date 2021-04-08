@@ -459,6 +459,14 @@ class OssnUser extends OssnEntities {
 				}
 				return false;
 		}
+
+		/**
+		 * Check if user is soft deleted
+		 *
+		 * @param int $user guid
+		 * 
+		 * @return boolean
+		 */
 		public function isRemoved($guid) {
 			$user = ossn_user_by_guid($guid);
 			return $user->is_removed ? true : false;
