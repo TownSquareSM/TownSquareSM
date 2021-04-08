@@ -150,7 +150,8 @@ class OssnChat extends OssnMessages {
 				$time             = time();
 				$params['from']   = 'ossn_users';
 				$params['wheres'] = array(
-						"last_activity > {$time} - {$intervals} AND guid IN ({$friend_guids})"
+						"last_activity > {$time} - {$intervals} AND guid IN ({$friend_guids})",
+						"is_removed = 0"
 				);
 				$friends = false;
 				$friendsl          = $this->select($params, true);

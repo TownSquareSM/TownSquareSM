@@ -327,6 +327,9 @@ class OssnUser extends OssnEntities {
 		 */
 		public function Login() {
 				$user = $this->getUser();
+				if($user->is_removed) {
+					return false;
+				}
 				if(isset($user->password_algorithm)) {
 						//setting user password algo
 						$this->setPassAlgo($user->password_algorithm);
@@ -448,11 +451,25 @@ class OssnUser extends OssnEntities {
 				}
 				if($relationships) {
 						foreach($relationships as $relation) {
+							if(!$this->isRemoved($relation->relation_to)) {
 								$friends[] = ossn_user_by_guid($relation->relation_to);
+							}
 						}
 						return $friends;
 				}
 				return false;
+		}
+
+		/**
+		 * Check if user is soft deleted
+		 *
+		 * @param int $user guid
+		 * 
+		 * @return boolean
+		 */
+		public function isRemoved($guid) {
+			$user = ossn_user_by_guid($guid);
+			return $user->is_removed ? true : false;
 		}
 		
 		/**
@@ -564,7 +581,8 @@ class OssnUser extends OssnEntities {
 				$time             = time();
 				$params['from']   = 'ossn_users';
 				$params['wheres'] = array(
-						"last_activity > {$time} - {$intervals}"
+						"last_activity > {$time} - {$intervals}",
+						"is_removed = 0"
 				);
 				$data             = $this->select($params, true);
 				if($data) {
@@ -652,6 +670,7 @@ class OssnUser extends OssnEntities {
 						}
 				}
 				$wheres[] = "u.time_created IS NOT NULL";
+				$wheres[] = "u.is_removed = 0";
 				if(isset($options['wheres']) && !empty($options['wheres'])) {
 						if(!is_array($options['wheres'])) {
 								$wheres[] = $options['wheres'];
@@ -948,11 +967,13 @@ class OssnUser extends OssnEntities {
 				}
 				if(empty($search)) {
 						$params['wheres'] = array(
-								"activation <> ''"
+								"activation <> ''",
+								"is_removed = 0",
 						);
 				} else {
 						$params['wheres'] = array(
 								"activation <> ''",
+								"is_removed = 0",
 								"CONCAT(first_name, ' ', last_name) LIKE '%$search%' AND activation <> '' OR
 					 		 username LIKE '%$search%' AND activation <> '' OR email LIKE '%$search%' AND activation <> ''"
 						);
@@ -1041,6 +1062,7 @@ class OssnUser extends OssnEntities {
 				$params = array();
 				
 				$wheres[] = "time_created > 0";
+				$wheres[] = "is_removed = 0";
 				
 				$params['from']     = "ossn_users";
 				$params['params']   = array(
@@ -1149,6 +1171,7 @@ class OssnUser extends OssnEntities {
 				$wheres['wheres'][] = "e.subtype='gender'";
 				$wheres['wheres'][] = "emd.value='{$gender}'";
 				$wheres['wheres'][] = "u.last_activity > {$time} - {$intervals}";
+				$wheres['wheres'][] = "u.is_removed = 0";
 				
 				$params['joins'][] = "JOIN ossn_entities as e ON e.owner_guid=u.guid";
 				$params['joins'][] = "JOIN ossn_entities_metadata as emd ON emd.guid=e.guid";

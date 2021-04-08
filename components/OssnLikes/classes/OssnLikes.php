@@ -180,8 +180,10 @@ class OssnLikes extends OssnDatabase {
 		 * @return bool;
 		 */
 		public function GetLikes($subject_id, $type = 'post') {
-				$this->statement("SELECT * FROM ossn_likes WHERE (
-	                     subject_id='{$subject_id}' AND type='{$type}');");
+				$this->statement("SELECT * FROM ossn_likes as l 
+								INNER JOIN ossn_users as u ON l.guid=u.guid
+								WHERE ( u.is_removed=0 AND
+	                     l.subject_id='{$subject_id}' AND l.type='{$type}');");
 				$this->execute();
 				return $this->fetch(true);
 		}
