@@ -451,6 +451,9 @@ class OssnObject extends OssnEntities {
 								$params['joins'][] = $jitem;
 						}
 				}
+				// Check if the user isn't soft deleted
+				$params['joins'][] = "JOIN ossn_users as u ON o.type='user' AND o.owner_guid=u.guid";
+				$wheres[] = "u.is_removed=0";
 				$distinct = '';
 				if($options['distinct'] === true) {
 						$distinct = "DISTINCT ";

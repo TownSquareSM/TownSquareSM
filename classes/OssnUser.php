@@ -451,11 +451,17 @@ class OssnUser extends OssnEntities {
 				}
 				if($relationships) {
 						foreach($relationships as $relation) {
+							if(!$this->isRemoved($relation->relation_to)) {
 								$friends[] = ossn_user_by_guid($relation->relation_to);
+							}
 						}
 						return $friends;
 				}
 				return false;
+		}
+		public function isRemoved($guid) {
+			$user = ossn_user_by_guid($guid);
+			return $user->is_removed ? true : false;
 		}
 		
 		/**
