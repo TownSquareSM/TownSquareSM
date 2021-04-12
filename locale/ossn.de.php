@@ -122,7 +122,7 @@ Falls der Link nicht anklickbar ist, kopiere ihn einfach in Deinen Browser.
     'theme:install:notice' => 'Lade ein neues Thema als .zip-Archiv hoch',
     'com:install:notice' => 'Lade eine neue Komponente als .zip-Archiv hoch',
 
-    'login:error' => 'Fehler bei der Anmeldung: Der Benutzer-Name und/oder das Passwort ist falsch!',
+    'login:error' => 'Fehler bei der Anmeldung: Die E-Mail und/oder das Passwort ist falsch!',
     'login:error:sub' => "Bitte überprüfe beides noch einmal, achte auf Groß- und Klein-Schreibung und probiere es erneut.",
     'login:success' => 'Du bist nun angemeldet',
 	

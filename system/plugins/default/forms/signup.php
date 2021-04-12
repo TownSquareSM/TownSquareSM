@@ -25,9 +25,11 @@
     	<input name="email_re" class="form-control" type="text" placeholder="<?php echo ossn_print('email:again'); ?>"/>
     </div>
 </div>
-<div>
-    <input type="text" class="form-control" name="username" placeholder="<?php echo ossn_print('username'); ?>"/>
-</div>
+<script>
+$(document).ready(function() {
+$('.form-inline').height($('.ossn-form-group-half').height());
+});
+</script>
 
 <div>
     <input type="password"  class="form-control" name="password" placeholder="<?php echo ossn_print('password'); ?>" />

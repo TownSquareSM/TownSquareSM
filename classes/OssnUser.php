@@ -34,7 +34,7 @@ class OssnUser extends OssnEntities {
 						$this->usertype = 'normal';
 				}
 				$user = $this->getUser();
-				if(empty($user->username) && $this->isPassword() && $this->isUsername()) {
+				if($this->isPassword()) {
 						//set default algo to bcrypt;
 						$password_encryption_alog = ossn_call_hook('user', 'password:algorithm', false, 'bcrypt');
 						$this->setPassAlgo($password_encryption_alog);
