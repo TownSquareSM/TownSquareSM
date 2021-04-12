@@ -128,7 +128,30 @@ if ($members) {
 
 		    					} else if($params['group']->isUserGroupAdmin($params['group']->guid,ossn_loggedin_user()->guid) && $user->guid !== ossn_loggedin_user()->guid && $user->guid !== $params['group']->owner_guid) {
 
-									
+									echo ossn_plugin_view('output/url', array(
+
+	    									'text' => ossn_print('group:memb:remove'),
+
+	    									'href' =>  ossn_site_url("action/group/member/decline?group={$params['group']->guid}&user={$user->guid}", true),
+
+		    								'class' => 'btn btn-warning btn-responsive ossn-make-sure'
+
+		    						));
+
+						        		echo ossn_plugin_view('output/url', array(
+
+					    					'data-new-owner' => $user->fullname,
+
+					    					'data-is-admin' => ossn_isAdminLoggedin(),
+
+						    				'text' => ossn_print('group:memb:make:owner'),
+
+						    				'href' =>  ossn_site_url("action/group/change_owner?group={$params['group']->guid}&user={$user->guid}", true),
+
+						    				'class' => 'btn btn-danger btn-responsive ossn-group-change-owner'
+
+						    		));
+
 
 									if($params['group']->isUserGroupAdmin($params['group']->guid,$user->guid)) {
 
