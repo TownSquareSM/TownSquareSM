@@ -187,11 +187,3 @@ Ossn.RegisterStartupFunction(function() {
 		});
 	});
 });
-
-if($.isFunction($.fn.btsConfirmButton)){
-	$(document).ready(function() {
-		$('#delete-account').btsConfirmButton(function(e) {
-				window.location = $('#delete-account').attr('href');
-			});
-	});
-}
