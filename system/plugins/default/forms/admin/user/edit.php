@@ -19,10 +19,6 @@ $user = $params['user'];
 	<input type='text' name="lastname" value="<?php echo $user->last_name; ?>"/>
 </div>
 <div>
-	<label> <?php echo ossn_print('username'); ?>  </label>
-	<input type='text' name="username" value="<?php echo $user->username; ?>" style="background:#E8E9EA;" readonly="readonly"/>
-</div>
-<div>
 	<label> <?php echo ossn_print('email'); ?> </label>
 	<input type='text' name="email" value="<?php echo $user->email; ?>"/>
 </div>

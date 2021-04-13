@@ -34,7 +34,7 @@ class OssnUser extends OssnEntities {
 						$this->usertype = 'normal';
 				}
 				$user = $this->getUser();
-				if(empty($user->username) && $this->isPassword() && $this->isUsername()) {
+				if($this->isPassword()) {
 						//set default algo to bcrypt;
 						$password_encryption_alog = ossn_call_hook('user', 'password:algorithm', false, 'bcrypt');
 						$this->setPassAlgo($password_encryption_alog);
@@ -768,8 +768,8 @@ class OssnUser extends OssnEntities {
 						$this->icon_guid = false;
 				}
 				foreach(ossn_user_image_sizes() as $size => $dimensions){
-						$seo                   = md5($this->username . $size . $this->icon_time . $this->icon_guid);
-						$url                   = ossn_site_url("avatar/{$this->username}/{$size}/{$seo}.jpeg");
+						$seo                   = md5($this->email . $size . $this->icon_time . $this->icon_guid);
+						$url                   = ossn_site_url("avatar/{$this->email}/{$size}/{$seo}.jpeg");
 						$this->iconURLS->$size = $url;
 				}
 				return ossn_call_hook('user', 'icon:urls', $this, $this->iconURLS);
@@ -781,7 +781,7 @@ class OssnUser extends OssnEntities {
 		 * @return string
 		 */
 		public function profileURL($extends = '') {
-				$this->profileurl = ossn_site_url("u/{$this->username}") . $extends;
+				$this->profileurl = ossn_site_url("u/{$this->email}") . $extends;
 				return ossn_call_hook('user', 'profile:url', $this, $this->profileurl);
 		}
 		
@@ -807,7 +807,7 @@ class OssnUser extends OssnEntities {
 						$this->data->{'login:reset:code'} = $this->value;
 						$this->save();
 				}
-				$emailreset_url = ossn_site_url("resetlogin?user={$this->username}&c={$this->value}");
+				$emailreset_url = ossn_site_url("resetlogin?user={$this->email}&c={$this->value}");
 				$emailreset_url = ossn_call_hook('user', 'reset:login:url', $this, $emailreset_url);
 				$sitename       = ossn_site_settings('site_name');
 				
@@ -889,7 +889,7 @@ class OssnUser extends OssnEntities {
 		 */
 		public function deleteUser() {
 				self::initAttributes();
-				if(!empty($this->guid) && !empty($this->username)) {
+				if(!empty($this->guid) && !empty($this->email)) {
 						$params['from']   = 'ossn_users';
 						$params['wheres'] = array(
 								"guid='{$this->guid}'"

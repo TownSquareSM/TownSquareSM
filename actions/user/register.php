@@ -12,7 +12,6 @@
 
 header('Content-Type: application/json');
 
-$user['username'] = input('username');
 $user['firstname'] = input('firstname');
 $user['lastname'] = input('lastname');
 $user['email'] = input('email');
@@ -44,7 +43,8 @@ if ($user['reemail'] !== $user['email']) {
 
 
 $add = new OssnUser;
-$add->username = $user['username'];
+// just in case, set username same as email 
+$add->username = $user['email'];
 $add->first_name = $user['firstname'];
 $add->last_name = $user['lastname'];
 $add->email = $user['email'];
@@ -57,20 +57,10 @@ foreach($fields as $items){
 	}
 }
 
-if (!$add->isUsername()) {
-    $em['dataerr'] = ossn_print('username:error');
-    echo json_encode($em);
-    exit;
-}
 if (!$add->isPassword()) {
     $em['dataerr'] = ossn_print('password:error');
     echo json_encode($em);
     exit;
-}
-if($add->isOssnUsername()){
-    $em['dataerr'] = ossn_print('username:inuse');
-    echo json_encode($em);
-    exit;	
 }
 if($add->isOssnEmail()){
     $em['dataerr'] = ossn_print('email:inuse');

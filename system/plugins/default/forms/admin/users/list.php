@@ -33,7 +33,6 @@ if (!empty($search)) {
     <tbody>
     <tr class="table-titles">
         <th><?php echo ossn_print('name'); ?></th>
-        <th><?php echo ossn_print('username'); ?></th>
         <th><?php echo ossn_print('email'); ?></th>
         <th><?php echo ossn_print('type'); ?></th>
         <th><?php echo ossn_print('lastlogin'); ?></th>
@@ -53,12 +52,11 @@ if (!empty($search)) {
                 <div class="left image"><img src="<?php echo $user->iconURL()->smaller; ?>"/></div>
                 <div class="name"><?php echo $user->fullname; ?></div>
             </td>
-            <td><?php echo $user->username; ?></td>
             <td><?php echo $user->email; ?></td>
             <td><?php echo $user->type; ?></td>
             <td><?php echo $lastlogin; ?></td>
             <td>
-                <a href="<?php echo ossn_site_url("administrator/edituser/{$user->username}"); ?>"><?php echo ossn_print('edit'); ?></a>
+                <a href="<?php echo ossn_site_url("administrator/edituser/{$user->email}"); ?>"><?php echo ossn_print('edit'); ?></a>
             </td>
             <td><a href="<?php echo ossn_site_url("action/admin/delete/user?guid={$user->guid}", true); ?>" class="userdelete"><?php echo ossn_print('delete'); ?></a></td>
 

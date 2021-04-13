@@ -11,6 +11,7 @@
 $en = array(
 	'mobilelogin' => 'Mobile',
 	'mobilelogin:username' => 'Email/Mobile',
+	'mobilelogin:email' => 'Email',
 	'mobilelogin:invalid:mobile' => 'Falsche Mobile Nummer',
 	'mobilelogin:num' => '+1245678910',
 	'mobilelogin:mobile:exists' => 'Mobile Nummer wird bereits verwendet',

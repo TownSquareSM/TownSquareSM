@@ -122,8 +122,8 @@ You may copy and paste the address to your browser manually in case the link doe
 	'theme:install:notice' => 'Upload a valid .zip theme package.',
 	'com:install:notice' => 'Upload a valid .zip component package.',
 	
-	'login:error' => 'Invalid username or passsword!',
-	'login:error:sub' => "We couldn't log you in. Please check your username or password and try again.",
+	'login:error' => 'Invalid email or passsword!',
+	'login:error:sub' => "We couldn't log you in. Please check your email or password and try again.",
 	'login:success' => 'You are now logged in!',
 	
 	'ossn:com:installer:create:tmpdir:error' => 'Cannot create temporary data directory', 

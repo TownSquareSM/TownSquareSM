@@ -10,8 +10,8 @@
  */
 ?>
 <div>
-	<label><?php echo ossn_print('mobilelogin:username'); ?></label>
-    <input type="text" name="username" />
+	<label><?php echo ossn_print('mobilelogin:email'); ?></label>
+    <input type="text" name="email" />
 </div>
 
 <div>
