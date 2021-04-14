@@ -26,10 +26,7 @@
 		</div>
 	</div>
 	<div class='row'>
-		<div class="col-md-6">
-			<input type="text" class="form-control" name="username" placeholder="<?php echo ossn_print('username'); ?>" />
-		</div>
-		<div class="col-md-6">
+		<div class="col-md-12">
 			<input type="password" class="form-control" name="password" placeholder="<?php echo ossn_print('password'); ?>" />
 		</div>
 	</div>

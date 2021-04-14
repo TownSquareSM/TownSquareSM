@@ -12,7 +12,6 @@
 define('OSSN_ALLOW_SYSTEM_START', TRUE);
 require_once(dirname(dirname(dirname(__FILE__))) . '/system/start.php');
 
-$user['username'] = input('username');
 $user['firstname'] = input('firstname');
 $user['lastname'] = input('lastname');
 $user['email'] = input('email');
@@ -40,7 +39,8 @@ if ($user['reemail'] !== $user['email']) {
 $user['birthdate'] = "{$user['bdd']}/{$user['bdm']}/{$user['bdy']}";
 
 $add = new OssnUser;
-$add->username = $user['username'];
+// just in case, set username same as email
+$add->username = $user['email'];
 $add->first_name = $user['firstname'];
 $add->last_name = $user['lastname'];
 $add->email = $user['email'];
