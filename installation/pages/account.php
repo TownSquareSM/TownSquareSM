@@ -25,8 +25,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/system/start.php');
             <input name="email_re" type="text" placeholder="<?php echo ossn_print('email:again'); ?>"/>
         </div>
 
-        <div>
-            <input type="text" name="username" placeholder="<?php echo ossn_print('username'); ?>" class="long-input"/>
+        <div style="width: 100%;">
             <input type="password" name="password" placeholder="<?php echo ossn_print('password'); ?>" class="long-input"/>
         </div>
         <div class="margin-top-10">

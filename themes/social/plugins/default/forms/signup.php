@@ -20,10 +20,6 @@
 </div>
 
 <div>
-    <input type="text" name="username" placeholder="<?php echo ossn_print('username'); ?>" class="long-input"/>
-</div>
-
-<div>
     <input type="password" name="password" placeholder="<?php echo ossn_print('password'); ?>" class="long-input"/>
 </div>
 <?php
