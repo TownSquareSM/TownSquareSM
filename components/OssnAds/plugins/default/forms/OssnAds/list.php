@@ -14,6 +14,8 @@ $items 		= $ads->getAds(array(), false);
 $count      = $ads->getAds(array(
 				'count' => true,								 
 ));
+$timer = new OssnAds;
+$timer = $timer->get_ad_timer()->description;
 ?>
 <div class="right margin-bottom-10">
 	<div class="inline-block">
@@ -21,7 +23,10 @@ $count      = $ads->getAds(array(
     </div>
     <div class="inline-block">
       <input type="submit" class="btn btn-danger" value="<?php echo ossn_print('delete'); ?>"/>
-   </div>   
+    </div>
+    <div class="inline-block">
+        <a href="<?php echo ossn_site_url("administrator/component/OssnAds?settings=set-timer"); ?>" class="btn btn-primary"><?php echo ossn_print('ad:set-timer:list') . $timer; ?>s</a>
+    </div>
 </div>
 <div>
 <table class="table">
@@ -41,7 +46,7 @@ $count      = $ads->getAds(array(
             <tr>
                 <td><input type="checkbox" name="entites[]" value="<?php echo $ads->guid; ?>"/></td>
                 <td><?php echo $ads->title; ?></td>
-                <td><?php echo $ads->description; ?></td>
+                <td><?php echo $ads->site_url; ?></td>
                 <!-- <td> 32</td> -->
                 <td>
                     <a href="<?php echo ossn_site_url("administrator/component/OssnAds?settings=view&id={$ads->guid}"); ?>">

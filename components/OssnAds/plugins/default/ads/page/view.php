@@ -14,18 +14,22 @@ $ads = $ads->getAds(
 		'offset' => 1
 	)
 );
+$timer = new OssnAds;
+$timer = $timer->get_ad_timer()->description;
 if ($ads) {
 	echo '<div class="ossn-ads">';
-        foreach ($ads as $ad) {
-          	$items[] = ossn_plugin_view('ads/item', array(
-			'item' => $ad, 
-		 ));
-        }
+	foreach($ads as $ad) {
+		$ads_guid[] = $ad->guid;
+	}
+	$item = ossn_plugin_view('ads/item', array(
+		'item'     => $ads[count($ads)-1],
+		'ads_guid' => $ads_guid,
+		'timer'    => $timer,
+	));
 	echo ossn_plugin_view('widget/view', array(
 			'title' => ossn_print('sponsored'),
-			'contents' => implode('', $items),
+			'contents' => $item,
 	));	
 	echo '</div>';
 }
-?>   
-       
+?>
