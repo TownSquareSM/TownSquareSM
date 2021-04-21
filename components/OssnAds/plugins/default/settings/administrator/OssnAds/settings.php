@@ -26,7 +26,7 @@ switch ($settings) {
 			$params['entity'] = $ads->getAd($id);
             echo ossn_plugin_view('ads/pages/edit', $params);
 		}
-        break;	
+        break;
 	//missing 'view' case - 'Browse' didn't work #233
     case 'view':
 	    $id = input('id');
@@ -35,9 +35,13 @@ switch ($settings) {
 			$params['entity'] = $ads->getAd($id);
             echo ossn_plugin_view('ads/pages/view', $params);
 		}
-        break;			
+        break;
+    case 'set-timer':
+        $ads = new OssnAds;
+        $params['entity'] = $ads->get_ad_timer();
+        echo ossn_plugin_view('ads/pages/set_timer', $params);
+        break;
     default:
         break;
-
 }
 ?>
