@@ -25,8 +25,8 @@
                 <input type="file" name="ossn_ads"/>
             </div>
             <div class="col-sm-4">
-                <label><?php echo ossn_print('ad:iframe:height') ?></label>
-                <input type="number" name="iframe_height" value="300">
+                <label><?php echo ossn_print('ad:iframe:height') ?>(100 - 500)</label>
+                <input type="number" name="iframe_height" value="300" min="100" max="500">
             </div>
         </div>
     </div>

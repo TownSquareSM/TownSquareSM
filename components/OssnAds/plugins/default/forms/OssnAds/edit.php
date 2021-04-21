@@ -35,8 +35,8 @@
                 <div class="ossn-ad-image" style="background:url('<?php echo ossn_ads_image_url($params['entity']->guid);?>') no-repeat;background-size: contain;"></div>
             </div>
             <div class="col-sm-4">
-                <label><?php echo ossn_print('ad:iframe:height') ?></label>
-                <input type="number" name="iframe_height" value="<?php echo $params['entity']->iframe_height; ?>">
+                <label><?php echo ossn_print('ad:iframe:height'); ?>(100 - 500)</label>
+                <input type="number" name="iframe_height" value="<?php echo $params['entity']->iframe_height; ?>" min="100" max="500">
             </div>
         </div>
     </div>
