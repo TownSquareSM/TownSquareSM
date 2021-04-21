@@ -195,7 +195,7 @@ class OssnAds extends OssnObject {
 										$path         = $entity->getParam('file:ossnads');
 										if(!empty($path)) {
 											$replace_file = ossn_get_userdata("object/{$entity->guid}/{$path}");
-											$regen_image = ossn_resize_image($_FILES['ossn_ads']['tmp_name'][0], 2048, 2048);
+											$regen_image = ossn_resize_image($_FILES['ossn_ads']['tmp_name'], 2048, 2048);
 											file_put_contents($replace_file, $regen_image);
 										} else {
 											$this->OssnFile->owner_guid = $params['guid'];
@@ -217,7 +217,6 @@ class OssnAds extends OssnObject {
 								$filedir = ossn_get_userdata("object/{$entity->guid}/{$filedir}");
 								$file = fopen($filedir, "w");
 								$content = $params['html'];
-								$content = nl2br($content);
 								$content = str_replace(array('\r\n', '\n'), "", $content);
 								$content = html_entity_decode($content);
 								fwrite($file, $content);
