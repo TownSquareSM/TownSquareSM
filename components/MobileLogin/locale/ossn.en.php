@@ -10,8 +10,7 @@
  */
 $en = array(
 	'mobilelogin' => 'Mobile',
-	'mobilelogin:username' => 'Email/Mobile',
-	'mobilelogin:email' => 'Email',
+	'mobilelogin:email' => 'Email/Mobile',
 	'mobilelogin:invalid:mobile' => 'Invalid Mobile Number',
 	'mobilelogin:num' => '+1245678910',
 	'mobilelogin:mobile:exists' => 'A mobile number is already in use',
