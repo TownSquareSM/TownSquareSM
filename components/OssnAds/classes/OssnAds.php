@@ -84,6 +84,7 @@ class OssnAds extends OssnObject {
 
 			if($timer && count($timer) == 1) {
 				$this->guid = $timer[0]->guid;
+				$params['title'] = $timer[0]->title;
 			}
 
 			$this->title       = $params['title'];
@@ -106,8 +107,19 @@ class OssnAds extends OssnObject {
 			
 			$timer = $this->searchObject($param);
 
+			// check for existing timer
 			if($timer && count($timer) == 1) {
 				return $timer[0];
+			} else {
+				// create new one if timer doesn't exist in the DB
+				$this->title       = 'Ad timer';
+				$this->description = 30;
+				$this->owner_guid  = $param['owner_guid'];
+				$this->type        = $param['type'];
+				$this->subtype     = $param['subtype'];
+				if($this->save()) {
+					return $this;
+				}
 			}
 			return false;
 		}
