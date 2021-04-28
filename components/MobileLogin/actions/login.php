@@ -18,12 +18,12 @@ if(empty($email) || empty($password) || !filter_var($email, FILTER_VALIDATE_EMAI
 		ossn_trigger_message(ossn_print('login:error'));
 		redirect();
 }
-// if(is_numeric($email)){
-// 	$user = ossn_user_by_mobile($email); //This function doesn't exist
-// 	if($user){
-// 		$email = $user->email;
-// 	}
-// }
+if(is_numeric($email)){
+	$user = ossn_user_by_mobile($email);
+	if($user){
+		$email = $user->email;
+	}
+}
 
 $user = ossn_user_by_email($email);
 
