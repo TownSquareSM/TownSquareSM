@@ -1,0 +1,35 @@
+pipeline{
+
+   agent any
+    stages { 
+ 
+    stage('Clean up workspace') {
+     steps{
+      cleanWs()
+     }
+  }
+  
+    stage('Get Latest Code') { steps{
+  
+dir('townsquare_web') {
+  git branch: 'master', credentialsId: 'Bitbucket', url: 'https://spoiledtechie@bitbucket.org/spoiledtechie/townsquare_web.git'
+  }
+  
+    }
+  }
+    
+  stage('PUSH GIT') {
+      steps{
+  
+   dir('townsquare_web') {
+   withCredentials([usernamePassword(credentialsId: 'bitbucketcreds', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                        bat 'git push --progress origin master:production'
+                    }
+  }
+  
+  
+    }
+    }
+  }
+      			  }
+		  

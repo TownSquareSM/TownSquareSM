@@ -1,0 +1,40 @@
+pipeline{
+
+
+   agent any
+    stages { 
+ 
+    stage('Clean up workspace') {
+     steps{
+      cleanWs()
+     }
+  }
+  
+      stage('Get Latest Code') { steps{
+	  
+	  
+	  
+  
+dir('townsquare_web') {
+  git branch: 'production', credentialsId: 'Bitbucket', url: 'https://spoiledtechie@bitbucket.org/spoiledtechie/townsquare_web.git'
+  }
+  
+    }
+  }
+ 
+  
+  
+   stage('Build Townsquare') {
+      steps{
+        
+    }
+  }
+          	
+		  }
+		  }
+  
+  
+  
+  
+  
+ 
