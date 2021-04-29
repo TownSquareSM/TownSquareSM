@@ -36,6 +36,9 @@ function ossn_profile() {
 						'text' => ossn_print('account:settings'),
 						'href' => ossn_loggedin_user()->profileURL('/edit')
 				));
+				// load bootstrap-confirm-button library
+				ossn_new_js('btsconfirmbutton', 'js/BootstrapConfirmButton');
+				ossn_load_js('btsconfirmbutton');
 		}
 		//callback
 		ossn_register_callback('page', 'load:search', 'ossn_search_users_link');

@@ -10,17 +10,23 @@
  */
 $add = new OssnAds;
 
-$params['title'] = input('title');
-$params['description'] = input('description');
+$params['iframe_height'] = input('iframe_height');
 $params['siteurl'] = input('siteurl');
+$params['html'] = input('htmleditor');
 foreach ($params as $field) {
     if (empty($field)) {
         ossn_trigger_message(ossn_print('fields:required'), 'error');
         redirect(REF);
     }
 }
-
-if ($add->addNewAd($params)) {
+$hidden = input('file-submit');
+$params['title'] = input('title');
+$params['description'] = input('description');
+$created_ad = $add->addNewAd($params);
+if($hidden === 'file-submit' && $created_ad) {
+    redirect("administrator/component/OssnAds?settings=edit&id={$created_ad->guid}");
+}
+if ($created_ad) {
     ossn_trigger_message(ossn_print('ad:created'), 'success');
     redirect(REF);
 } else {

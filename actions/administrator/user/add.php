@@ -9,7 +9,6 @@
  * @link      https://www.opensource-socialnetwork.org/
  */
 
-$user['username'] = input('username');
 $user['firstname'] = input('firstname');
 $user['lastname'] = input('lastname');
 $user['email'] = input('email');
@@ -39,7 +38,8 @@ if (!in_array($user['type'], $types)) {
 }
 
 $add = new OssnUser;
-$add->username = $user['username'];
+// just in case, set username same as email
+$add->username = $user['email'];
 $add->first_name = $user['firstname'];
 $add->last_name = $user['lastname'];
 $add->email = $user['email'];
@@ -53,16 +53,8 @@ foreach($fields as $items){
 	}
 }
 
-if (!$add->isUsername($user['username'])) {
-    ossn_trigger_message(ossn_print('username:error'), 'error');
-    redirect(REF);
-}
 if (!$add->isPassword()) {
     ossn_trigger_message(ossn_print('password:error'), 'error');
-    redirect(REF);
-}
-if($add->isOssnUsername()){
-    ossn_trigger_message(ossn_print('username:inuse'), 'error');
     redirect(REF);
 }
 if($add->isOssnEmail()){

@@ -60,6 +60,8 @@ function ossn_groups() {
 				ossn_register_action('group/cover/upload', __OSSN_GROUPS__ . 'actions/group/cover/upload.php');
 				ossn_register_action('group/cover/reposition', __OSSN_GROUPS__ . 'actions/group/cover/reposition.php');
 				ossn_register_action('group/cover/delete', __OSSN_GROUPS__ . 'actions/group/cover/delete.php');
+				ossn_register_action('group/change_group_admin', __OSSN_GROUPS__ . 'actions/group/change_group_admin.php');
+				ossn_register_action('group/remove_group_admin', __OSSN_GROUPS__ . 'actions/group/remove_group_admin.php');
 		}
 		
 		
@@ -145,8 +147,13 @@ function ossn_group_load_event($event, $type, $params) {
 		ossn_register_menu_link('members', 'members', ossn_group_url($owner) . 'members', 'groupheader');
 		// show 'Requests' menu tab only on pending requests
 		$group = ossn_get_group_by_guid($owner);
-		if ($group && $group->countRequests() && ($group->owner_guid == ossn_loggedin_user()->guid || ossn_isAdminLoggedin())) {
-			ossn_register_menu_link('requests', 'requests', ossn_group_url($owner) . 'requests', 'groupheader');
+		if($group->countRequests() === false){
+			$str = "";
+		} else {
+			$str = " (".$group->countRequests().")";
+		}
+		if ($group && $group->countRequests() && ($group->owner_guid == ossn_loggedin_user()->guid || ossn_isAdminLoggedin() || $group->isUserGroupAdmin($group->guid,ossn_loggedin_user()->guid))) {
+			ossn_register_menu_link('requests', 'requests'.$str, ossn_group_url($owner) . 'requests', 'groupheader');
 		}
 }
 
@@ -353,6 +360,16 @@ function group_edit_page($hook, $type, $return, $params) {
  */
 function group_requests_page($hook, $type, $return, $params) {
 		$page  = $params['subpage'];
+		$requests_count = $params['group']->countRequests();
+		
+		
+		if($requests_count === false){
+			$requests_count = 0;
+			$str = "";
+		} else {
+			$str = " (".$requests_count.")";
+		}
+		
 		$group = ossn_get_group_by_guid(ossn_get_page_owner_guid());
 		if($page == 'requests') {
 				if($group->owner_guid !== ossn_loggedin_user()->guid && !ossn_isAdminLoggedin()) {
@@ -362,7 +379,7 @@ function group_requests_page($hook, $type, $return, $params) {
 						'group' => $group
 				));
 				$mod         = array(
-						'title' => ossn_print('requests'),
+						'title' => ossn_print('requests').$str,
 						'content' => $mod_content
 				);
 				echo ossn_set_page_layout('module', $mod);

@@ -1,14 +1,16 @@
 <div class="row">
 <div class="col-md-12">
         <div class="panel panel-default ossn-polls-form-questions">
-            <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-line-chart"></i> <?php echo $params['poll']->title;?></h3>
-            </div>
-            <div class="panel-body">
             	<?php
 				$poll = $params['poll'];
 				$options = $poll->getOptions();
-				$votes = $poll->getVotes();				
+				$votes = $poll->getVotes();
+				?>
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-line-chart"></i> <?php echo $params['poll']->title; echo $votes['total_votes'] ? " ({$votes['total_votes']})" : '';?></h3>
+            </div>
+            <div class="panel-body">
+				<?php
                 if($options){
 					foreach($options as $key => $option){ 
 						$color = substr($key, 0, 3);
@@ -21,11 +23,11 @@
 				?>
 				   <div class="row ossn-polls-item">
                   	<div class="col-md-12 col-sm-12 col-xs-12">
-                        	  <label><?php echo $option;?></label>
+                        	  <label><?php echo $option; echo $votes['results'][$key] ? " ({$votes['results'][$key]})" : '' ;?></label>
 	                		   <div class="progress">
-                               		<?php if(isset($votes[$key])){ ?>
- 									 <div class="progress-bar" role="progressbar" style="width: <?php echo $votes[$key];?>%;<?php echo $color;?>" aria-valuemax="100">
-                      				   <?php echo $votes[$key];?>%
+                               		<?php if(isset($votes['total_percentages'][$key])){ ?>
+ 									 <div class="progress-bar" role="progressbar" style="width: <?php echo $votes['total_percentages'][$key];?>%;<?php echo $color;?>" aria-valuemax="100">
+                      				   <?php echo $votes['total_percentages'][$key];?>%
                        			    </div>
                                     <?php } else { ?>
   									 <div class="progress-bar" role="progressbar" style="color:#000;width: 0%;<?php echo $color;?>" aria-valuemax="100">

@@ -391,6 +391,10 @@ class OssnGroup extends OssnObject {
 				if(!$this->requestExists($from, $group)) {
 						return false;
 				}
+				
+				if($this->isUserGroupAdmin($group, $from)) {					
+					$this->removeAsGroupAdmin($group, $from);					
+				}
 				$this->statement("DELETE FROM ossn_relationships WHERE(
 						 relation_from='{$from}' AND relation_to='{$group}'  AND type='group:join' OR 
 						 relation_from='{$group}' AND relation_to='{$from}' AND type='group:join:approve')");
@@ -654,5 +658,40 @@ class OssnGroup extends OssnObject {
 						}
 				}
 				return false;
+		}
+		
+		public function makeGroupAdmin($new_admin,$guid) {
+			
+			$sql = "insert into ossn_group_admins(guid,user) 
+					values('$guid','$new_admin')"; 
+			//print_r($sql); exit;
+			$this->statement($sql);
+			$this->execute();
+			return true;
+		}
+		
+		public function isUserGroupAdmin($guid, $user) {
+				$this->statement("SELECT * FROM ossn_group_admins WHERE(
+					     guid='{$guid}' AND
+					     user ='{$user}'
+					     );");
+
+				$this->execute();
+				$from = $this->fetch();
+		
+				if(isset($from->group_admin_id)) {
+						return true;
+				}
+				return false;
+		}
+		
+		public function removeAsGroupAdmin($guid, $user) {
+			$this->statement("delete FROM ossn_group_admins WHERE(
+					     guid='{$guid}' AND
+					     user ='{$user}'
+					     );");
+			$this->execute();
+
+			return true;		
 		}
 } //class

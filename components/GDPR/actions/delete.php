@@ -10,7 +10,18 @@
  */
 $user = ossn_loggedin_user();
 if($user && !$user->isAdmin()){
-	if($user->deleteUser()){
+	$guid = $user->guid;
+	$params['table']  = 'ossn_users';
+	$params['names']  = array(
+			'is_removed'
+	);
+	$params['values'] = array(
+			1
+	);
+	$params['wheres'] = array(
+			"guid='{$guid}'"
+	);
+	if($guid > 0 && $user->update($params)) {
 		$user->Logout();
 		ossn_trigger_message(ossn_print('gdpr:account:deleted'), 'success');
 		redirect();

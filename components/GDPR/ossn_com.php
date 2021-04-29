@@ -15,15 +15,7 @@ function gdpr_init() {
 		ossn_extend_view('css/ossn.default', 'gdpr/css');
 		
 		if(ossn_isLoggedin() && !ossn_isAdminLoggedin()){
-				ossn_register_action('gdpr/delete/account', GDPR . 'actions/delete.php');
-				ossn_register_menu_item('topbar_dropdown', array(
-						'name' => 'deleteaccount',
-						'text' => ossn_print('gdpr:deleteaccount'),
-						'href' => ossn_site_url('action/gdpr/delete/account'),
-						'class' => 'ossn-make-sure',
-						'action' => true,
-						'priority' => 201
-				));			
+				ossn_register_action('gdpr/delete/account', GDPR . 'actions/delete.php');		
 		}
 		
 		ossn_register_callback('action', 'load', 'gdpr_signup_check');

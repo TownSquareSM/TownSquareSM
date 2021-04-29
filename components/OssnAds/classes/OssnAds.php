@@ -20,15 +20,18 @@ class OssnAds extends OssnObject {
 				$this->title          = $params['title'];
 				$this->description    = $params['description'];
 				$this->data->site_url = $params['siteurl'];
+				$this->data->ad_html  = $params['html'];
+				$this->data->iframe_height = $params['iframe_height'];
 				
 				$this->owner_guid = 1;
 				$this->type       = 'site';
 				$this->subtype    = 'ossnads';
-				if(empty($_FILES['ossn_ads']['tmp_name'])) {
-						return false;
-				}
-				if($this->addObject()) {
-						if(isset($_FILES['ossn_ads'])) {
+				// if(empty($_FILES['ossn_ads']['tmp_name'])) {
+				// 		return false;
+				// }
+				$add = $this->addObject();
+				if($add) {
+						if(isset($_FILES['ossn_ads']) && $_FILES['ossn_ads']['size'] !== 0) {
 								$this->OssnFile->owner_guid = $this->getObjectId();
 								$this->OssnFile->type       = 'object';
 								$this->OssnFile->subtype    = 'ossnads';
@@ -42,9 +45,83 @@ class OssnAds extends OssnObject {
 								$this->OssnFile->setPath('ossnads/images/');
 								$this->OssnFile->addFile();
 						}
-						return true;
+						// save html file
+						$iframe_dir = ossn_get_userdata("object/{$this->getObjectId()}/ossnads/iframe/");
+						if(!is_dir($iframe_dir)) {
+							mkdir($iframe_dir, 0755, true);
+						}
+						$filedir = "{$iframe_dir}{$this->getObjectId()}.html";
+						$file = fopen($filedir, "w");
+						$content = $params['html'];
+						$content = str_replace(array('\r\n', '\n'), "", $content);
+						$content = html_entity_decode($content);
+						fwrite($file, $content);
+						$this->owner_guid = $this->getObjectId();
+						$this->type       = 'object';
+						$this->subtype    = 'html:ossnads';
+						$this->value      = "ossnads/iframe/{$this->getObjectId()}.html";
+						$this->extension  = 'html';
+						$this->path       = 'ossnads/iframe/';
+						$this->add();
+						fclose($file);
+						return $add;
 				}
 				return false;
+		}
+
+		/**
+		 * Set timer for ad rotation.
+		 * 
+		 * @return bool;
+		 */
+		public function set_ad_timer($params) {
+			$param = array();
+			$param['type']       = 'site';
+			$param['subtype']    = 'ossnads:timer';
+			$param['owner_guid'] = 1;
+			
+			$timer = $this->searchObject($param);
+
+			if($timer && count($timer) == 1) {
+				$this->guid = $timer[0]->guid;
+				$params['title'] = $timer[0]->title;
+			}
+
+			$this->title       = $params['title'];
+			$this->description = $params['timer'];
+			$this->owner_guid  = $param['owner_guid'];
+			$this->type        = $param['type'];
+			$this->subtype     = $param['subtype'];
+
+			if($this->save()) {
+				return true;
+			}
+			return false;
+		}
+
+		public function get_ad_timer() {
+			$param = array();
+			$param['type']       = 'site';
+			$param['subtype']    = 'ossnads:timer';
+			$param['owner_guid'] = 1;
+			
+			$timer = $this->searchObject($param);
+
+			// check for existing timer
+			if($timer && count($timer) == 1) {
+				return $timer[0];
+			} else {
+				// create new one if timer doesn't exist in the DB
+				$this->title       = 'Ad timer';
+				$this->description = 30;
+				$this->owner_guid  = $param['owner_guid'];
+				$this->type        = $param['type'];
+				$this->subtype     = $param['subtype'];
+				if($this->save()) {
+					return $this;
+				}
+			}
+			return false;
 		}
 		
 		/**
@@ -112,7 +189,7 @@ class OssnAds extends OssnObject {
 		 */
 		public function EditAd($params) {
 				self::initAttributes();
-				if(!empty($params['guid']) && !empty($params['title']) && !empty($params['description']) && !empty($params['siteurl'])) {
+				if(!empty($params['guid']) && !empty($params['html']) && !empty($params['iframe_height']) && !empty($params['siteurl'])) {
 						$entity               = get_ad_entity($params['guid']);
 						$fields               = array(
 								'title',
@@ -123,15 +200,46 @@ class OssnAds extends OssnObject {
 								$params['description']
 						);
 						$this->data->site_url = $params['siteurl'];
+						$this->data->ad_html = $params['html'];
+						$this->data->iframe_height = $params['iframe_height'];
 						if($this->updateObject($fields, $data, $entity->guid)) {
 								if(isset($_FILES['ossn_ads']) && $_FILES['ossn_ads']['size'] !== 0) {
 										$path         = $entity->getParam('file:ossnads');
-										$replace_file = ossn_get_userdata("object/{$entity->guid}/{$path}");
 										if(!empty($path)) {
-												$regen_image = ossn_resize_image($_FILES['ossn_ads']['tmp_name'], 2048, 2048);
-												file_put_contents($replace_file, $regen_image);
+											$replace_file = ossn_get_userdata("object/{$entity->guid}/{$path}");
+											$regen_image = ossn_resize_image($_FILES['ossn_ads']['tmp_name'], 2048, 2048);
+											file_put_contents($replace_file, $regen_image);
+										} else {
+											$this->OssnFile->owner_guid = $params['guid'];
+											$this->OssnFile->type       = 'object';
+											$this->OssnFile->subtype    = 'ossnads';
+											$this->OssnFile->setFile('ossn_ads');
+											$this->OssnFile->setExtension(array(
+													'jpg',
+													'png',
+													'jpeg',
+													'gif'
+											));
+											$this->OssnFile->setPath('ossnads/images/');
+											$this->OssnFile->addFile();
 										}
 								}
+								// save html file
+								$filedir = $entity->getParam('html:ossnads');
+								$filedir = ossn_get_userdata("object/{$entity->guid}/{$filedir}");
+								$file = fopen($filedir, "w");
+								$content = $params['html'];
+								$content = str_replace(array('\r\n', '\n'), "", $content);
+								$content = html_entity_decode($content);
+								fwrite($file, $content);
+								$this->owner_guid = $this->getObjectId();
+								$this->type       = 'object';
+								$this->subtype    = 'html:ossnads';
+								$this->value      = "ossnads/iframe/{$this->getObjectId()}.html";
+								$this->extension  = 'html';
+								$this->path       = 'ossnads/iframe/';
+								$this->add();
+								fclose($file);
 								return true;
 						}
 				}

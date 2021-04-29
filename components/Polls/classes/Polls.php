@@ -145,13 +145,13 @@ class Polls extends \OssnObject {
 								$types[$item->getParam('poll:item')][] = $item->id;
 						}
 						foreach ($types as $k => $type) {
-								$results[$k] = count($type);
+								$votes['results'][$k] = count($type);
 						}
-						$total_votes = array_sum($results);
-						foreach ($results as $r => $result) {
-								$total_percentages[$r] = ceil(($result / $total_votes) * 100);
+						$votes['total_votes'] = array_sum($votes['results']);
+						foreach ($votes['results'] as $r => $result) {
+								$votes['total_percentages'][$r] = ceil(($result / $votes['total_votes']) * 100);
 						}
-						return $total_percentages;
+						return $votes;
 				}
 				return false;
 		}

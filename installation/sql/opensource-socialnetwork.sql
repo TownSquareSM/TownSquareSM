@@ -297,8 +297,26 @@ CREATE TABLE IF NOT EXISTS `ossn_users` (
   `last_activity` int NOT NULL,
   `activation` varchar(32),
   `time_created` int NOT NULL,
+  `is_removed` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`guid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1 COLLATE=utf8mb4_general_ci;
+
+
+--
+-- Table structure for table `ossn_group_admins`
+--
+
+CREATE TABLE `ossn_group_admins` (
+  `group_admin_id` bigint NOT NULL AUTO_INCREMENT,
+  `guid` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`group_admin_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+alter table `ossn_group_admins` add FOREIGN key(guid) REFERENCES ossn_object(guid);
+alter table `ossn_group_admins` add FOREIGN key(user) REFERENCES ossn_users(guid);
+
 
 --
 -- Ossn v4.2 Database improvements

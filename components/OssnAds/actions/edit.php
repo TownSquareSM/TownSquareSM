@@ -10,10 +10,10 @@
  */
 $edit = new OssnAds;
 
-$params['title'] = input('title');
-$params['description'] = input('description');
 $params['siteurl'] = input('siteurl');
+$params['iframe_height'] = input('iframe_height');
 $params['guid'] = input('entity');
+$params['html'] = input('htmleditor');
 
 foreach ($params as $field) {
     if (empty($field)) {
@@ -21,8 +21,15 @@ foreach ($params as $field) {
         redirect(REF);
     }
 }
+$params['title'] = input('title');
+$params['description'] = input('description');
 
-if ($edit->EditAd($params)) {
+$hidden = input('file-submit');
+$editedAd = $edit->EditAd($params);
+if ($hidden === 'file-submit' && $editedAd) {
+    redirect("administrator/component/OssnAds?settings=edit&id={$params['guid']}");
+}
+if ($editedAd) {
     ossn_trigger_message(ossn_print('ad:edited'), 'success');
     redirect(REF);
 } else {

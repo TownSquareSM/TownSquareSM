@@ -10,8 +10,8 @@
  */
 ?>
 <div>
-     <label><?php echo ossn_print('username'); ?></label>
-     <input type="text" name="username" />
+     <label><?php echo ossn_print('email'); ?></label>
+     <input type="text" name="email" />
 </div>
 
 <div>

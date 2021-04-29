@@ -18,10 +18,6 @@
 	<input type='text' name="lastname" placeholder=''/>
 </div>
 <div>
-	<label> <?php echo ossn_print('username'); ?> </label>
-	<input type='text' name="username" placeholder=''/>
-</div>
-<div>
 	<label> <?php echo ossn_print('email'); ?> </label>
 	<input type='text' name="email" placeholder=''/>
 </div>

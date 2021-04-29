@@ -326,7 +326,7 @@ class OssnAnnotation extends OssnEntities {
 				if($getlimit) {
 						$options['limit'] = $getlimit;
 				}
-				
+
 				if(!empty($options['annotation_id'])) {
 						$wheres[] = "a.id='{$options['annotation_id']}'";
 				}
@@ -367,6 +367,8 @@ class OssnAnnotation extends OssnEntities {
 				}
 				$params['joins'][] = "INNER JOIN ossn_entities as e ON e.owner_guid=a.id";
 				$params['joins'][] = "INNER JOIN ossn_entities_metadata as emd ON e.guid=emd.guid";
+				// Check if the user is not soft deleted
+				$params['joins'][] = "INNER JOIN ossn_users as u ON a.owner_guid=u.guid AND u.is_removed=0";
 				
 				$wheres[] = "e.type='annotation'";
 				$wheres[] = "emd.guid=e.guid";

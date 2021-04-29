@@ -22,6 +22,7 @@ function ossn_ads() {
 				ossn_register_action('ossnads/add', __OSSN_ADS__ . 'actions/add.php');
 				ossn_register_action('ossnads/edit', __OSSN_ADS__ . 'actions/edit.php');
 				ossn_register_action('ossnads/delete', __OSSN_ADS__ . 'actions/delete.php');
+				ossn_register_action('ossnads/set-timer', __OSSN_ADS__ . 'actions/set_timer.php');
 		}
 		ossn_register_page('ossnads', 'ossn_ads_handler');
 		
@@ -87,6 +88,21 @@ function ossn_ads_handler($pages) {
 								echo $image;
 						}
 						break;
+				case 'iframe':
+					header('Content-Type: text/html');
+					header('X-Robots-Tag: noindex, noarchive');
+					$dir = ossn_get_userdata("object/{$pages[1]}/ossnads/{$pages[0]}/{$pages[2]}");
+					$html = file_get_contents($dir);
+					echo $html;
+					break;
+				case 'html':
+					header('Content-Type: application/json');
+					header('X-Robots-Tag: noindex, noarchive');
+					$iem = new OssnAds;
+					$ad = ossn_plugin_view('ads/custom_item', array('item' => $iem->getAd($pages[1])));
+					$ret = ['code' => html_entity_decode($ad)];
+					echo json_encode($ret);
+					break;
 				default:
 						echo ossn_error_page();
 						break;
@@ -94,7 +110,7 @@ function ossn_ads_handler($pages) {
 }
 
 /**
- * Get ad image url
+ * Get ad image url if the image exists
  *
  * @params $guid ad guid
  *
@@ -103,8 +119,22 @@ function ossn_ads_handler($pages) {
  */
 function ossn_ads_image_url($guid) {
 		$image = md5($guid);
-		return ossn_site_url("ossnads/photo/{$guid}/{$image}.jpg");
+		$ad = new OssnAds;
+		$ad = $ad->getAd($guid);
+		return $ad->getParam('file:ossnads') ? ossn_site_url("ossnads/photo/{$guid}/{$image}.jpg") : '';
 }
+/**
+ * Get ad iframe html file url
+ *
+ * @params $guid ad guid
+ *
+ * @return url;
+ * @access public
+ */
+function ossn_ads_iframe_url($guid) {
+	return ossn_site_url("ossnads/iframe/{$guid}/{$guid}.html");
+}
+
 /**
  * Get ad entity
  *

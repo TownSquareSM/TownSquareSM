@@ -12,26 +12,20 @@ if (ossn_isAdminLoggedin()) {
     redirect('administrator/dashboard');
 }
 
-$username = input('username');
+$email = input('email');
 $password = input('password');
 
-//check if username is email
-if (strpos($username, '@') !== false){
-	$user = ossn_user_by_email($username);
-	$username = $user->username;
-}
-
-if (ossn_user_by_username($username)->type !== 'admin') {
+if (empty($email) || empty($password) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     ossn_trigger_message(ossn_print('login:error'), 'error');
     redirect(REF);
 }
-if (empty($username) || empty($password)) {
+if (ossn_user_by_email($email)->type !== 'admin') {
     ossn_trigger_message(ossn_print('login:error'), 'error');
     redirect(REF);
 }
 
 $login = new OssnUser;
-$login->username = $username;
+$login->email = $email;
 $login->password = $password;
 if ($login->Login()) {
     ossn_trigger_message(ossn_print('login:success'), 'success');
