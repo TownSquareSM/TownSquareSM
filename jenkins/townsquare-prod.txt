@@ -24,11 +24,6 @@ dir('townsquare_web') {
  
   
   
-   stage('Build Townsquare') {
-      steps{
-        
-    }
-  }
   
 		  
 		  
