@@ -10,21 +10,17 @@ pipeline{
      }
   }
   
-      stage('Get Latest Code') { steps{
+      stage('Get Latest Code') { 
 	  
+	  steps{
 	  
-	  
-  
 dir('townsquare_web') {
-  git branch: 'production', credentialsId: 'Bitbucket', url: 'https://spoiledtechie@bitbucket.org/spoiledtechie/townsquare_web.git'
+  git branch: 'master', credentialsId: 'Bitbucket', url: 'https://spoiledtechie@bitbucket.org/spoiledtechie/townsquare_web.git'
   }
   
     }
   }
- 
   
-  
-          	
 		  }
 		  }
   
