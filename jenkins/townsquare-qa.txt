@@ -1,0 +1,43 @@
+pipeline{
+
+
+   agent any
+    stages { 
+ 
+    stage('Clean up workspace') {
+     steps{
+      cleanWs()
+     }
+  }
+  
+      stage('Get Latest Code') { steps{
+	  
+	  
+	  
+  
+dir('townsquare_web') {
+  git branch: 'production', credentialsId: 'Bitbucket', url: 'https://spoiledtechie@bitbucket.org/spoiledtechie/townsquare_web.git'
+  }
+  
+    }
+  }
+ 
+  
+  
+  
+		  
+		  
+		     stage('pushing Townsquare via FTP') {
+     steps{
+         ftpPublisher alwaysPublishFromMaster: false, masterNodeName:"", paramPublish: [parameterName:""], continueOnError: false, failOnError: false, publishers: [[configName: 'TownTest', transfers: [[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'townsquare_web', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**']], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false]]
+     }
+      }
+        	
+		  }
+		  }
+  
+  
+  
+  
+  
+ 
